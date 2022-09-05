@@ -6,9 +6,9 @@ routes.get("/", (req,res) => {
     })
 })
 
-const fruitRoutes = require('./fruit')
-const categoryRoutes = require('./category')
-const brandRoutes = require('./brand')
+const fruitRoutes = require('./fruitRoutes')
+const categoryRoutes = require('./categoryRoutes')
+const brandRoutes = require('./brandRoutes')
 
 routes.use("/fruits", fruitRoutes)
 routes.use("/categories", categoryRoutes)

@@ -1,9 +1,12 @@
-const { fruit } = require("../models");
+const { fruit, brand, category } = require("../models");
 
 class FruitController {
-  static async getFruit(req, res) {
+  static async getFruits(req, res) {
     try {
-      let result = await fruit.findAll();
+      let result = await fruit.findAll({
+        order: [['id', 'asc']],
+        include: [brand, category]
+      });
       res.json(result);
     } catch (err) {
       res.json(err);
@@ -59,18 +62,22 @@ class FruitController {
     }
   }
   static async delete(req, res) {
-    const id = Number(req.params.id);
+    try {
+      const id = Number(req.params.id);
 
-    let result = await fruit.destroy({
-      where: { id },
-    });
-    result === 1
-      ? res.json({
-          message: `Fruit with id of ${id} has been deleted`,
-        })
-      : res.json({
-          message: `Fruit with id of ${id} has not been deleted`,
-        });
+      let result = await fruit.destroy({
+        where: { id },
+      });
+      result === 1
+        ? res.json({
+            message: `Fruit with id of ${id} has been deleted`,
+          })
+        : res.json({
+            message: `Fruit with id of ${id} has not been deleted`,
+          });
+    } catch (err) {
+      res.status(500).json(err);
+    }
   }
 }
 

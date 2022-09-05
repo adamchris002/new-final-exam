@@ -1,12 +1,12 @@
 const { brand } = require("../models");
 
 class BrandController {
-  static async getBrand(req, res) {
+  static async getBrands(req, res) {
     try {
       let result = await brand.findAll();
-      res.json(result);
+      res.status(200).json(result);
     } catch (err) {
-      res.json(err);
+      res.status(500).json(err);
     }
   }
   static async addPage(req, res) {}
@@ -19,9 +19,9 @@ class BrandController {
         city,
         total_employees,
       });
-      res.json(result);
+      res.status(200).json(result);
     } catch (err) {
-      res.json(err);
+      res.status(500).json(err);
     }
   }
   static async updatePage(req, res) {}
@@ -44,29 +44,33 @@ class BrandController {
       );
 
       result[0] === 1
-        ? res.json({
+        ? res.status(200).json({
             message: `Brand with id of ${id} has been updated`,
           })
-        : res.json({
+        : res.status(200).json({
             message: `Brand with id of ${id} has not been updated`,
           });
     } catch (err) {
-      res.json(err);
+      res.status(500).json(err);
     }
   }
   static async delete(req, res) {
-    const id = Number(req.params.id);
+    try {
+      const id = Number(req.params.id);
 
-    let result = await brand.destroy({
-      where: { id },
-    });
-    result === 1
-      ? res.json({
-          message: `Brand with id of ${id} has been deleted`,
-        })
-      : res.json({
-          message: `Brand with id of ${id} has not been deleted`,
-        });
+      let result = await brand.destroy({
+        where: { id },
+      });
+      result === 1
+        ? res.status(200).json({
+            message: `Brand with id of ${id} has been deleted`,
+          })
+        : res.status(200).json({
+            message: `Brand with id of ${id} has not been deleted`,
+          });
+    } catch (err) {
+      res.status(500).json(err);
+    }
   }
 }
 
